@@ -80,7 +80,17 @@ root@T460Ubuntu1:/etc/nginx/sites-available# sudo /etc/init.d/nginx stop
 
 Remember to open ports
     
-  
+## renew the certificate
+
+- invoke the command 
+```
+sudo dpkg-reconfigure passbolt-ce-server
+```
+it could happen that certbot already runs so:
+```
+ps -ef | grep certb
+kill processid
+```
 
 ## Email Server:
 
