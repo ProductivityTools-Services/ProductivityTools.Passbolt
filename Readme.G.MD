@@ -6,13 +6,15 @@ glcould auth login
 gcloud config set project pwpassbolt1
 ```
 
+findstr on windows, grep on linux
 
 Phanteon terminal
 - gcloud compute zones list |grep us-central1
 - gcloud config set compute/zone us-central1-a
-- gcloud compute images list
+- gcloud compute images list |grep 
 - gcloud compute machine-types list |grep e2-standard
 - gcloud compute instances create "pwpassbolt" --machine-type "e2-standard-2" --image-project "ubuntu-os-cloud" --image-family "ubuntu-2204-lts" --subnet "default"
+- gcloud compute instsances delete
 
 Connect through GCP:
 - Click SSH from the Pantheon UI.
