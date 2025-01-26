@@ -84,4 +84,4 @@ Remember to open ports
 
 ## Email Server:
 
-  
+  ![](Images/20250120202021.png)
