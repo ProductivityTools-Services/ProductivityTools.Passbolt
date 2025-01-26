@@ -7,3 +7,11 @@ Phanteon terminal
 - gcloud compute images list
 - gcloud compute machine-types list |grep e2-standard
 - gcloud compute instances create "pwpassbolt" --machine-type "e2-standard-2" --image-project "ubuntu-os-cloud" --image-family "ubuntu-2204-lts" --subnet "default"
+
+Connect through GCP:
+- Click SSH from the Pantheon UI.
+- Wait a few minutes for it to fail.
+- Retry without Identity-Aware Proxy.
+
+Firewall
+- sudo ufw allow 80
