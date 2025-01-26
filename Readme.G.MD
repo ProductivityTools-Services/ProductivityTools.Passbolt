@@ -1,5 +1,11 @@
-Google PC
-- Install gcloud through software center
+Setup on the Google Cloud
+
+### 
+```
+glcould auth login
+gcloud config set project pwpassbolt1
+```
+
 
 Phanteon terminal
 - gcloud compute zones list |grep us-central1
