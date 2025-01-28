@@ -15,11 +15,14 @@ Phanteon terminal
 - gcloud compute machine-types list |grep e2-standard
 - gcloud compute instances create "pwpassbolt" --machine-type "e2-standard-2" --image-project "ubuntu-os-cloud" --image-family "ubuntu-2204-lts" --subnet "default"
 - gcloud compute instsances delete
+- gcloud compute instances start pwpassbolt
 
 
 [tutorial](https://ubuntu.com/blog/launch-ubuntu-desktop-on-google-cloud)
 [tutorial2](https://ubuntu.com/blog/launch-ubuntu-22-04-desktop-on-google-cloud)
+[remote desktop](https://ubuntu.com/blog/launch-ubuntu-desktop-on-google-cloud)
 - gcloud compute ssh --zone "us-central1-a" "pwpassbolt" --project "pwpassbolt1"
+- sudo passwd
 - sudo apt update
 - sudo install tasksel
 - wget https://dl.google.com/linux/direct/chrome-remote-desktop_current_amd64.deb
@@ -30,6 +33,21 @@ Phanteon terminal
 - sudo bash -c ‘echo “exec /etc/X11/Xsession /usr/bin/gnome-session” > /etc/chrome-remote-desktop-session’
 - go to https://remotedesktop.google.com/headless and configure connection
 
+
+### Passbolt
+- sudo ufw allow 80
+- gcloud compute instances add-tags pwpassbolt --tags http-server
+
+curl -LO https://download.passbolt.com/ce/installer/passbolt-repo-setup.ce.sh
+ chmod +x passbolt-repo-setup.ce.sh
+ sudo ./passbolt-repo-setup.ce.sh 
+sudo apt install passbolt-ce-server
+admin password: pawel123
+admin database user: passboltadmin
+passbolt databse passsword
+provide domain for the server
+
+![](Images/20250128230057.png)
 
 
 
