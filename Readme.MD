@@ -70,6 +70,11 @@ Passbolt should open
 - Username: pwujczyk@gmail.com
 
 
+## not fully validated options
+
+## GCE desktop 
+Those steps are not necessary 
+
 [tutorial](https://ubuntu.com/blog/launch-ubuntu-desktop-on-google-cloud)
 [tutorial2](https://ubuntu.com/blog/launch-ubuntu-22-04-desktop-on-google-cloud)
 [remote desktop](https://ubuntu.com/blog/launch-ubuntu-desktop-on-google-cloud)
