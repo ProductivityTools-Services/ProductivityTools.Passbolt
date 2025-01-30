@@ -97,6 +97,31 @@ sudo docker run --rm -d -p 80:80 --name my-nginx nginx
 
 ```
 
+### reverse proxy
+
+/etc/nginx/conf.d
+```
+server {
+    listen       80;
+    #listen  [::]:80;
+    server_name testgce.productivitytools.top;
+
+    location / {
+        proxy_pass http://10.128.0.6/;
+    }
+}
+
+server {
+    listen       80;
+    #listen  [::]:80;
+    server_name testdocker.productivitytools.top;
+
+    location / {
+        proxy_pass http://10.128.0.6:81/;
+    }
+}
+```
+
 
 ## not fully validated options
 
