@@ -190,15 +190,12 @@ services:
     ports:
       - 82:80
       - 444:443
-    #Alternatively for non-root images:
-    # - 80:8080
-    # - 443:4433
 
 volumes:
   database_volume:
   gpg_volume:
   jwt_volume:
-
+```
 
 ## not fully validated options
 
