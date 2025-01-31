@@ -93,13 +93,13 @@ echo \
   sudo apt-get update
 sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 sudo docker run hello-world
-sudo docker run --rm -d -p 80:80 --name my-nginx nginx
+sudo docker run --rm -d -p 81:80 --name my-nginx nginx
 
 ```
 
 ### reverse proxy
 
-/etc/nginx/conf.d
+sudo nano /etc/nginx/conf.d/default.conf
 ```
 server {
     listen       80;
@@ -120,6 +120,11 @@ server {
         proxy_pass http://10.128.0.6:81/;
     }
 }
+```
+validate
+```
+sudo nginx -t
+sudo nginx -s reload
 ```
 
 
