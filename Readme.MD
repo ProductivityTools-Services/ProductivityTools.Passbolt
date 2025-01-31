@@ -120,12 +120,84 @@ server {
         proxy_pass http://10.128.0.6:81/;
     }
 }
+
+server {
+    listen       80;
+    listen       443;
+    #listen  [::]:80;
+    server_name testpassbolt.productivitytools.top;
+
+    location / {
+        proxy_pass http://10.128.0.6:82/;
+    }
+}
+
 ```
 validate
 ```
 sudo nginx -t
 sudo nginx -s reload
 ```
+
+
+## Passbolt
+
+```docker
+services:
+  db:
+    image: mariadb:10.11
+    restart: unless-stopped
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: "true"
+      MYSQL_DATABASE: "passbolt"
+      MYSQL_USER: "passbolt"
+      MYSQL_PASSWORD: "P4ssb0lt"
+    volumes:
+      - database_volume:/var/lib/mysql
+
+  passbolt:
+    image: passbolt/passbolt:latest-ce
+    #Alternatively you can use rootless:
+    #image: passbolt/passbolt:latest-ce-non-root
+    restart: unless-stopped
+    depends_on:
+      - db
+    environment:
+      APP_FULL_BASE_URL: http://testpassbolt.productivitytools.top/
+      DATASOURCES_DEFAULT_HOST: "db"
+      DATASOURCES_DEFAULT_USERNAME: "passbolt"
+      DATASOURCES_DEFAULT_PASSWORD: "P4ssb0lt"
+      DATASOURCES_DEFAULT_DATABASE: "passbolt"
+      EMAIL_DEFAULT_FROM_NAME: "passbolt"
+      EMAIL_DEFAULT_FROM: "pwujczyk@gmail.com"
+      EMAIL_TRANSPORT_DEFAULT_HOST: "smtp.gmail.com"
+      EMAIL_TRANSPORT_DEFAULT_PORT: "587"
+      EMAIL_TRANSPORT_DEFAULT_USERNAME: "productivitytools.tech@gmail.com"
+      EMAIL_TRANSPORT_DEFAULT_PASSWORD: ""
+      EMAIL_TRANSPORT_DEFAULT_TLS: "yes"
+    volumes:
+      - gpg_volume:/etc/passbolt/gpg
+      - jwt_volume:/etc/passbolt/jwt
+    command:
+      [
+        "/usr/bin/wait-for.sh",
+        "-t",
+        "0",
+        "db:3306",
+        "--",
+        "/docker-entrypoint.sh",
+      ]
+    ports:
+      - 82:80
+      - 444:443
+    #Alternatively for non-root images:
+    # - 80:8080
+    # - 443:4433
+
+volumes:
+  database_volume:
+  gpg_volume:
+  jwt_volume:
 
 
 ## not fully validated options
@@ -167,3 +239,5 @@ Connect through GCP:
 
 Firewall
 - sudo ufw allow 80
+
+
