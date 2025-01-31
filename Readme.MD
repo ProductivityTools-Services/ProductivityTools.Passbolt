@@ -1,3 +1,16 @@
+This document describes how to setup passbolt on your own instance. It presents different ways of doing it:
+
+- Setup passbolt directly on a GCE machine - ceates the GCE VM and setup the passbolt on them as a dedicated service under 443 port. It is good but it is difficult to setup different service on https on the same machine
+- Setup passbolt on docker on a GCE machine - different approach where passbolt is deployed on the container. The tutorial is done in steps:
+  - Create VM
+  - Create docker container with nginx to validate working solution
+  - Create docker container with Passbolt on http port
+  - create docker container with Passbolt on https port
+
+In this tutorial to validate the solutions you need to also setup domains on your domain provider, for example testpassbolt.productivitytools.top. 
+
+
+
 ## Setup passbolt directly on a GCE machine
 
 Basic commands to init the cloud
