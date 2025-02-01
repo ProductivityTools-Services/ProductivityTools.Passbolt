@@ -209,7 +209,7 @@ volumes:
   gpg_volume:
   jwt_volume:
 ```
-
+docker compose -f docker-compose-ce.yaml up -d
 ## not fully validated options
 
 ## GCE desktop 
