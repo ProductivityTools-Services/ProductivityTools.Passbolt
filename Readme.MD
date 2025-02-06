@@ -1,89 +1,24 @@
 This document describes how to setup passbolt on your own instance. It presents different ways of doing it.
 
-The final goal is to create the 
 
-- Setup passbolt directly on a GCE machine - ceates the GCE VM and setup the passbolt on them as a dedicated service under 443 port. It is good but it is difficult to setup different service on https on the same machine
-- Setup passbolt on docker on a GCE machine - different approach where passbolt is deployed on the container. The tutorial is done in steps:
-  - Create VM
-  - Create docker container with nginx to validate working solution
-  - Create docker container with Passbolt on http port
-  - create docker container with Passbolt on https port
+The recommended way to install passbolt is directly ont he VM (this is decribed in section **Setup passbolt directly on a GCE machine**). This approach has a major drawback that after doing that you have 443 port reserved for passbolt. If you would like to setup something else on https you need to use different port. 
+
+The *advanced* way is to setup passbolt on the docker. I am doing it differently than in the tutorial on passbolt page. 
+
+My goal is to:
+- deploy Passbolt on the docker without https
+- create reverse proxy. Reverse proxy
+  - handle https
+  - terminate https
+  - pass requests to Passbolt
+
+![](Images/20250209224356.png)
+
+
 
 In this tutorial to validate the solutions you need to also setup domains on your domain provider, for example testpassbolt.productivitytools.top. 
 
 
-
-## Setup passbolt directly on a GCE machine
-
-Basic commands to init the cloud
-### 
-```
-glcould auth login
-gcloud config set project pwpassbolt1
-```
-
-On windows replace grep with findstr 
-
-### Create GCE VM with Ubuntu
-```
-gcloud compute zones list |grep us-central1
-gcloud config set compute/zone us-central1-a
-gcloud compute images list |grep 
-gcloud compute machine-types list |grep e2-standard
-gcloud compute instances create "pwpassbolt" --machine-type "e2-standard-2" --image-project "ubuntu-os-cloud" --image-family "ubuntu-2204-lts" --subnet "default"
-gcloud compute instsances delete
-gcloud compute instances stop pwpassbolt
-gcloud compute instances start pwpassbolt
-```
-
-### Nginx
-```
-sudo apt-get update
-sudo apt install nginx -y
-curl localhost
-```
-
-### Passbolt
-```
-curl -LO https://download.passbolt.com/ce/installer/passbolt-repo-setup.ce.sh
-chmod +x passbolt-repo-setup.ce.sh
-sudo ./passbolt-repo-setup.ce.sh 
-sudo apt install passbolt-ce-server
-```
-
-Enable https and http in the Phanteon (maybe it could be done from cmd)
-
-![](Images/20250129230854.png)
-
-Passbolt should open
-
-
-![](Images/20250128230057.png)
-
-- MySQL administator username: root
-- MySQL administator username: password: pawel123
-- Passbolt database user: passboltadmin
-- Passbolt databse name: passboltdb
-- provide domain for the server
-![](Images/20250129230818.png)
-
-![](Images/20250129231158.png)
-
-### email
-- Sender name: pawel
-- Sender email: productivitytools.tech@gmail.com
-- SMTP host: smtp.gmail.com
-- Use TLS: yes
-- Port: 587
-- Authentication method: Username & password
-- Username: productivitytools.tech@gmail.com
-- Password: google codes genearted on their page
-- Client: empty
-
-### Admin user details
-- Pawel
-- Wujczyk
-- Username: pwujczyk@gmail.com
 
 ## Setup passbolt on docker on a GCE machine
 
@@ -114,7 +49,10 @@ sudo docker run --rm -d -p 81:80 --name my-nginx nginx
 
 ### reverse proxy
 
-sudo nano /etc/nginx/conf.d/default.conf
+sudo nano /etc/nginx/conf.d/default.conf. 
+
+
+it could be also in /etc/nginx/sites-availiable 
 ```
 server {
     listen       80;
@@ -212,6 +150,84 @@ volumes:
   jwt_volume:
 ```
 docker compose -f docker-compose-ce.yaml up -d
+
+
+
+## Setup passbolt directly on a GCE machine
+
+Basic commands to init the cloud
+### 
+```
+glcould auth login
+gcloud config set project pwpassbolt1
+```
+
+On windows replace grep with findstr 
+
+### Create GCE VM with Ubuntu
+```
+gcloud compute zones list |grep us-central1
+gcloud config set compute/zone us-central1-a
+gcloud compute images list |grep 
+gcloud compute machine-types list |grep e2-standard
+gcloud compute instances create "pwpassbolt" --machine-type "e2-standard-2" --image-project "ubuntu-os-cloud" --image-family "ubuntu-2204-lts" --subnet "default"
+gcloud compute instsances delete
+gcloud compute instances stop pwpassbolt
+gcloud compute instances start pwpassbolt
+```
+
+### Nginx
+```
+sudo apt-get update
+sudo apt install nginx -y
+curl localhost
+```
+
+### Passbolt
+```
+curl -LO https://download.passbolt.com/ce/installer/passbolt-repo-setup.ce.sh
+chmod +x passbolt-repo-setup.ce.sh
+sudo ./passbolt-repo-setup.ce.sh 
+sudo apt install passbolt-ce-server
+```
+
+Enable https and http in the Phanteon (maybe it could be done from cmd)
+
+![](Images/20250129230854.png)
+
+Passbolt should open
+
+
+![](Images/20250128230057.png)
+
+- MySQL administator username: root
+- MySQL administator username: password: pawel123
+- Passbolt database user: passboltadmin
+- Passbolt databse name: passboltdb
+- provide domain for the server
+![](Images/20250129230818.png)
+
+![](Images/20250129231158.png)
+
+### email
+- Sender name: pawel
+- Sender email: productivitytools.tech@gmail.com
+- SMTP host: smtp.gmail.com
+- Use TLS: yes
+- Port: 587
+- Authentication method: Username & password
+- Username: productivitytools.tech@gmail.com
+- Password: google codes genearted on their page
+- Client: empty
+
+### Admin user details
+- Pawel
+- Wujczyk
+- Username: pwujczyk@gmail.com
+
+
+
+
 ## not fully validated options
 
 ## GCE desktop 
