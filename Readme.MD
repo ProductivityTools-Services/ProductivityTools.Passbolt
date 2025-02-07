@@ -7,7 +7,7 @@ The *advanced* way is to setup passbolt on the docker. I am doing it differently
 
 My goal is to:
 - deploy Passbolt on the docker without https
-- create reverse proxy. Reverse proxy
+- Create reverse proxy. Reverse proxy:
   - handle https
   - terminate https
   - pass requests to Passbolt
@@ -23,13 +23,35 @@ In this tutorial to validate the solutions you need to also setup domains on you
 ## Setup passbolt on docker on a GCE machine
 
 - Create VM
+
+```
+gcloud compute instances create "passbolt3" --machine-type "e2-standard-2" --image-project "ubuntu-os-cloud" --image-family "ubuntu-2204-lts" --subnet "default"
+
+```
+
 - Setup Nginx
-- Change Nginx so you know from where it was hosted
+
+```
+sudo apt-get update
+sudo apt install nginx -y
+curl localhost
+```
+
+- Change Nginx default page so if you hit it you know that this is default page
 ```
 sudo nano /var/www/html/index.nginx-debian.html
 ```
+- Enable http and https
+![](Images/20250210233210.png)
 
-- Validate if external port is working
+- Create DNS item and validate if opening page through domain works
+
+![](Images/20250210233045.png)
+
+```
+curl http://passbolttest.productivitytools.top/
+```
+
 - [Install docker](https://docs.docker.com/engine/install/ubuntu/)
 ```
 sudo apt-get update
@@ -46,52 +68,7 @@ sudo docker run hello-world
 sudo docker run --rm -d -p 81:80 --name my-nginx nginx
 
 ```
-
-### reverse proxy
-
-sudo nano /etc/nginx/conf.d/default.conf. 
-
-
-it could be also in /etc/nginx/sites-availiable 
-```
-server {
-    listen       80;
-    #listen  [::]:80;
-    server_name testgce.productivitytools.top;
-
-    location / {
-        proxy_pass http://10.128.0.6/;
-    }
-}
-
-server {
-    listen       80;
-    #listen  [::]:80;
-    server_name testdocker.productivitytools.top;
-
-    location / {
-        proxy_pass http://10.128.0.6:81/;
-    }
-}
-
-server {
-    listen       80;
-    listen       443;
-    #listen  [::]:80;
-    server_name testpassbolt.productivitytools.top;
-
-    location / {
-        proxy_pass http://10.128.0.6:82/;
-    }
-}
-
-```
-validate
-```
-sudo nginx -t
-sudo nginx -s reload
-```
-
+Setup passbolt
 
 ## Passbolt
 
@@ -151,6 +128,84 @@ volumes:
 ```
 docker compose -f docker-compose-ce.yaml up -d
 
+
+
+### reverse proxy
+
+```
+sudo nano /etc/nginx/sites-available/passbolt3.productivitytools.top
+```
+Eventually ```sudo nano /etc/nginx/conf.d/default.conf```
+
+```
+server {
+    listen       80;
+    #listen  [::]:80;
+    server_name passbolt3.productivitytools.top;
+
+    location / {
+        proxy_pass http://10.128.0.10:82/;
+    }
+}
+```
+Validate and reload nginx.
+```
+sudo nginx -t
+sudo nginx -s reload
+```
+
+
+Setup dns:
+![](assets/2025-02-11-22-39-05.png)
+
+At this moment you should have passbolt on http port loaded.
+
+**If page won't load check if in the compose.yaml the address is aligned with the dns adderss.**
+
+
+![](Images/20250211225425.png)
+
+
+
+it could be also in /etc/nginx/sites-availiable 
+```
+server {
+    listen       80;
+    #listen  [::]:80;
+    server_name testgce.productivitytools.top;
+
+    location / {
+        proxy_pass http://10.128.0.6:82/;
+    }
+}
+
+server {
+    listen       80;
+    #listen  [::]:80;
+    server_name testdocker.productivitytools.top;
+
+    location / {
+        proxy_pass http://10.128.0.6:81/;
+    }
+}
+
+server {
+    listen       80;
+    listen       443;
+    #listen  [::]:80;
+    server_name testpassbolt.productivitytools.top;
+
+    location / {
+        proxy_pass http://10.128.0.6:82/;
+    }
+}
+
+```
+validate
+```
+sudo nginx -t
+sudo nginx -s reload
+```
 
 
 ## Setup passbolt directly on a GCE machine
