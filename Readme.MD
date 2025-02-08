@@ -166,6 +166,21 @@ At this moment you should have passbolt on http port loaded.
 ![](Images/20250211225425.png)
 
 
+### Https
+
+```
+sudo apt install certbot python3-certbot-nginx
+sudo ufw status
+sudo apt-get install certbot -y 
+sudo certbot --nginx -d passbolt3.productivitytools.top
+```
+Change the url in the docker-compose file
+```yaml
+     APP_FULL_BASE_URL: https://testpassbolt.productivitytools.top/
+```
+![](Images/20250212194744.png)
+
+
 
 it could be also in /etc/nginx/sites-availiable 
 ```
