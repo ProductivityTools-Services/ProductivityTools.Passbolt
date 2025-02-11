@@ -30,3 +30,51 @@ cat backup_1739386665.sql | sudo docker exec -i pwujczyklearning1-db-1  /usr/bin
 
 docker cp  serverkey_private.asc eea39acf800a:/etc/passbolt/gpg/
 docker cp  serverkey.asc eea39acf800a:/etc/passbolt/gpg/
+
+
+
+
+## Second
+
+copy tar.gz
+
+
+```
+tar -xvzf backup-2025-02-23--17-25-18.tar.gz
+```
+
+```
+sudo docker cp backup_1740327919.sql  dd15eed6336c:/backup.sql
+sudo docker exec -it pwujczyklearning1-db-1 sh
+mysql -u passbolt -p
+show databases;
+exit
+
+mysql -u passbolt -p passbolt <backup.sql
+```
+
+```
+sudo docker cp serverkey.asc 29e7dd079cc9:/serverkey.asc
+sudo docker cp serverkey_private.asc 29e7dd079cc9:/serverkey_private.asc
+sudo docker cp passbolt.php 29e7dd079cc9:/passbolt.php
+
+sudo docker exec -it pwujczyklearning1-passbolt-1 s
+
+rm /etc/passbolt/gpg/serverkey.asc
+rm /etc/passbolt/gpg/serverkey_private.asc
+cp /serverkey.asc /etc/passbolt/gpg/
+cp /serverkey_private.asc /etc/passbolt/gpg/
+cd /etc/passbolt/gpg
+gpg --import serverkey_private.asc 
+```
+
+
+export TERM=xterm
+
+/usr/share/php/passbolt/
+
+healthcheck:
+
+docker exec -ti <PASSBOLT_CONTAINER> bash
+source /etc/environment
+su -s /bin/bash -c "/usr/share/php/passbolt/bin/cake passbolt healthcheck" www-data

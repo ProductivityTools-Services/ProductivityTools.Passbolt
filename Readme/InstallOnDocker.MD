@@ -3,6 +3,8 @@
 
 - Create VM
 
+
+
 ```
 gcloud compute instances create "passbolt3" --machine-type "e2-standard-2" --image-project "ubuntu-os-cloud" --image-family "ubuntu-2204-lts" --subnet "default"
 ```
@@ -48,6 +50,10 @@ sudo docker run --rm -d -p 81:80 --name my-nginx nginx
 Setup passbolt
 
 ## Passbolt
+
+```
+url https://raw.githubusercontent.com/ProductivityTools-Services/ProductivityTools.Passbolt/refs/heads/main/docker-compose-ce.yaml -o docker-compose.yaml
+```
 
 ```docker
 services:
@@ -110,7 +116,7 @@ docker compose -f docker-compose-ce.yaml up -d
 ### reverse proxy
 
 ```
-sudo nano /etc/nginx/sites-available/passbolt3.productivitytools.top
+sudo nano /etc/nginx/sites-available/testpassbolt.productivitytools.top
 ```
 Eventually ```sudo nano /etc/nginx/conf.d/default.conf```
 
@@ -118,13 +124,18 @@ Eventually ```sudo nano /etc/nginx/conf.d/default.conf```
 server {
     listen       80;
     #listen  [::]:80;
-    server_name passbolt3.productivitytools.top;
+    server_name testpassbolt.productivitytools.top;
 
     location / {
         proxy_pass http://10.128.0.10:82/;
     }
 }
 ```
+
+```
+sudo ln -s /etc/nginx/sites-available/testpassbolt.productivitytools.top /etc/nginx/sites-enabled/
+```
+
 Validate and reload nginx.
 ```
 sudo nginx -t
@@ -157,3 +168,11 @@ Change the url in the docker-compose file
 ```
 ![](Images/20250212194744.png)
 
+
+
+## new user
+
+```
+sudo docker exec -it pwujczyklearning1-passbolt-1 sh
+su -s /bin/bash -c "/usr/share/php/passbolt/bin/cake passbolt register_user -u pwujczyk@gmail.com -f pawel -l wujczyk -r admin" www-data
+```
