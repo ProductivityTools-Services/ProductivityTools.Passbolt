@@ -35,7 +35,7 @@ curl http://passbolttest.productivitytools.top/
 - [Install docker](https://docs.docker.com/engine/install/ubuntu/)
 ```
 sudo apt-get update
-sudo apt-get install ca-certificates curl
+sudo apt-get install ca-certificates curl -y
 sudo install -m 0755 -d /etc/apt/keyrings
 sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
 echo \
@@ -43,7 +43,7 @@ echo \
   $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
   sudo apt-get update
-sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
 sudo docker run hello-world
 sudo docker run --rm -d -p 81:80 --name my-nginx nginx
 ```
@@ -52,7 +52,7 @@ Setup passbolt
 ## Passbolt
 
 ```
-url https://raw.githubusercontent.com/ProductivityTools-Services/ProductivityTools.Passbolt/refs/heads/main/docker-compose-ce.yaml -o docker-compose.yaml
+curl https://raw.githubusercontent.com/ProductivityTools-Services/ProductivityTools.Passbolt/refs/heads/main/docker-compose-ce.yaml -o docker-compose.yaml
 ```
 
 ```docker
@@ -157,15 +157,23 @@ At this moment you should have passbolt on http port loaded.
 ### Https
 
 ```
-sudo apt install certbot python3-certbot-nginx
+sudo apt install certbot python3-certbot-nginx -y
 sudo ufw status
 sudo apt-get install certbot -y 
-sudo certbot --nginx -d passbolt3.productivitytools.top
+sudo certbot --nginx -d testp.productivitytools.top
 ```
 Change the url in the docker-compose file
+```
+sudo nano docker-compose.yaml
+```
 ```yaml
      APP_FULL_BASE_URL: https://testpassbolt.productivitytools.top/
 ```
+
+```
+sudo docker compose -f docker-compose.yaml up -d
+```
+
 ![](Images/20250212194744.png)
 
 
