@@ -22,6 +22,7 @@ curl localhost
 sudo nano /var/www/html/index.nginx-debian.html
 ```
 - Enable http and https
+
 ![](Images/20250210233210.png)
 
 - Create DNS item and validate if opening page through domain works

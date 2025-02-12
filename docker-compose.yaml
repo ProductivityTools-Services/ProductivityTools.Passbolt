@@ -18,7 +18,7 @@ services:
     depends_on:
       - db
     environment:
-      APP_FULL_BASE_URL: http://testpassbolt.productivitytools.top/
+      APP_FULL_BASE_URL: https://passbolt.productivitytools.top/
       DATASOURCES_DEFAULT_HOST: "db"
       DATASOURCES_DEFAULT_USERNAME: "passbolt"
       DATASOURCES_DEFAULT_PASSWORD: "P4ssb0lt"
@@ -44,7 +44,7 @@ services:
       ]
     ports:
       - 82:80
-      - 444:443
+     #- 444:443
 
 volumes:
   database_volume:
