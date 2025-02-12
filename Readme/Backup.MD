@@ -2,6 +2,8 @@
 
 [tutorial](https://www.passbolt.com/docs/hosting/backup/from-packages/)
 
+## I did not succeed with backup and restore
+
 ```
 sudo mysql 
 

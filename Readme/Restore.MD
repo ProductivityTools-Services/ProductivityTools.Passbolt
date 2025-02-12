@@ -1,5 +1,6 @@
 [tutorial](https://community.passbolt.com/t/restore-backup-ubuntu-20-04/3179)
 
+## I did not succeed with backup and restore
 
 ```
 Install passbolt like you would normally using the installation scripts.
