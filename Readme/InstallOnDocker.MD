@@ -77,7 +77,7 @@ services:
     depends_on:
       - db
     environment:
-      APP_FULL_BASE_URL: http://testpassbolt.productivitytools.top/
+      APP_FULL_BASE_URL: http://passbolt.productivitytools.top/
       DATASOURCES_DEFAULT_HOST: "db"
       DATASOURCES_DEFAULT_USERNAME: "passbolt"
       DATASOURCES_DEFAULT_PASSWORD: "P4ssb0lt"
@@ -103,7 +103,7 @@ services:
       ]
     ports:
       - 82:80
-      - 444:443
+      #- 444:443
 
 volumes:
   database_volume:
@@ -117,7 +117,7 @@ docker compose -f docker-compose-ce.yaml up -d
 ### reverse proxy
 
 ```
-sudo nano /etc/nginx/sites-available/testpassbolt.productivitytools.top
+sudo nano /etc/nginx/sites-available/passbolt.productivitytools.top
 ```
 Eventually ```sudo nano /etc/nginx/conf.d/default.conf```
 
@@ -125,16 +125,16 @@ Eventually ```sudo nano /etc/nginx/conf.d/default.conf```
 server {
     listen       80;
     #listen  [::]:80;
-    server_name testpassbolt.productivitytools.top;
+    server_name passbolt.productivitytools.top;
 
     location / {
-        proxy_pass http://10.128.0.10:82/;
+        proxy_pass http://127.0.0.1:82/;
     }
 }
 ```
 
 ```
-sudo ln -s /etc/nginx/sites-available/testpassbolt.productivitytools.top /etc/nginx/sites-enabled/
+sudo ln -s /etc/nginx/sites-available/passbolt.productivitytools.top /etc/nginx/sites-enabled/
 ```
 
 Validate and reload nginx.
@@ -161,7 +161,7 @@ At this moment you should have passbolt on http port loaded.
 sudo apt install certbot python3-certbot-nginx -y
 sudo ufw status
 sudo apt-get install certbot -y 
-sudo certbot --nginx -d testp.productivitytools.top
+sudo certbot --nginx -d passbolt.productivitytools.top
 ```
 Change the url in the docker-compose file
 ```
